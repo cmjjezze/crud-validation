@@ -29,6 +29,22 @@ const EditContact = () => {
       alert("Please select location");
       return;
     }
+
+    console.log(name);
+    console.log(name.replace(/ /g, '').match(/[^a-zA-Z]/g)!==null);
+    if (name.replace(/ /g, '').match(/[^a-zA-Z]/g)!==null) {
+      alert("Please enter letter only [a-z],[A-Z]");
+      return;
+    }
+
+    console.log(email);
+    console.log(email.replace('@', '').replace('.', ''));
+    console.log(email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g)!==null);
+    if (email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g)!==null) {
+      alert("Special character(s) is not valid for Email Address");
+      return;
+    }
+
     await axios.put(`http://localhost:3003/contacts/${id}`, user);
     history.push("/");
   };
@@ -62,6 +78,7 @@ const EditContact = () => {
               className="form-control form-control-md"
               placeholder="example@email.com"
               maxLength="40"
+              pattern=".+\.com" 
               required
               name="email"
               value={email}
