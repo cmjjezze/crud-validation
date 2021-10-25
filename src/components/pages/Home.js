@@ -1,26 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Posts from "./Posts";
+import Pagination from "./Pagination";
 
 const Home = () => {
-  const [contacts, setUser] = useState([]);
+  const [contacts, setPosts] = useState([]);
+  //const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
 
   useEffect(() => {
-    loadUsers();
+    fetchPosts();
   }, []);
 
-  const loadUsers = async () => {
-    const result = await axios.get("http://localhost:3003/contacts");
-    setUser(result.data.reverse());
-  };
+  const fetchPosts = async () => {
+    //setLoading(true);
+    const res = await axios.get("http://localhost:3003/contacts");
+    setPosts(res.data);
+    //setLoading(false);
+  }
 
   const deleteUser = async (id) => {
     await axios.delete(`http://localhost:3003/contacts/${id}`);
-    loadUsers();
+    fetchPosts();
   };
 
+  //Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexofFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = contacts.slice(indexofFirstPost, indexOfLastPost);
+
+  //Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  
+  console.log("get contacts");
+  console.log(currentPosts.length);
+  console.log(contacts);
   return (
     <div className="container">
+      {/* <Posts posts={currentPosts} loading={loading} /> */}
+      <br />
       <table className="table table-hover">
         <thead>
           <tr className="text-center">
@@ -34,9 +55,9 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((user, index) => (
-            <tr>
-              <th scope="row">{index + 1}</th>
+          {currentPosts.map((user, index) => (
+            <tr className="text-center">
+              <th scope="row">{user.id}</th>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.contact}</td>
@@ -62,6 +83,7 @@ const Home = () => {
           ))}
         </tbody>
       </table>
+      <Pagination postsPerPage={postsPerPage} totalPosts={contacts.length} paginate={paginate} />
     </div>
   );
 };
