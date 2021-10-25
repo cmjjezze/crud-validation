@@ -19,19 +19,85 @@ const ViewContact = () => {
     setUser(res.data);
   };
   return (
-    <div className="container py-4">
-      <Link className="btn btn-primary" to="/">
-        back to Home
-      </Link>
-      <h1 className="display-4">User Id: {id}</h1>
-      <hr />
-      <ul className="list-group w-50">
-        <li className="list-group-item">full name: {user.name}</li>
-        <li className="list-group-item">email address: {user.email}</li>
-        <li className="list-group-item">contact number: {user.contact}</li>
-        <li className="list-group-item">location: {user.location}</li>
-        <li className="list-group-item">registered date: {user.date}</li>
-      </ul>
+    <div className="container">
+      <div className="w-75 mx-auto shadow p-5">
+        <h2 className="text-center mb-4">View Contact {user.id}</h2>
+        <form>
+          <div className="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              className="form-control form-control-md"
+              placeholder="Last Name, First Name Middle Name"
+              name="name"
+              maxLength="30"
+              required
+              value={user.name}
+              disabled="true"
+            />
+          </div>
+          <div className="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              className="form-control form-control-md"
+              placeholder="example@email.com"
+              pattern=".+\.com"
+              maxLength="40"
+              required
+              name="email"
+              value={user.email}
+              disabled="true"
+            />
+          </div>
+          <div className="form-group">
+            <label>Contact Number</label>
+            <input
+              type="text"
+              className="form-control form-control-md"
+              placeholder="999999999"
+              maxLength="11"
+              pattern="[0-9]{11}"
+              required
+              name="contact"
+              value={user.contact}
+              disabled="true"
+            />
+          </div>
+          <div className="form-group">
+            <label>Location</label>
+            <select
+              id="inputState"
+              className="form-control form-control-md"
+              required
+              name="location"
+              value={user.location}
+              disabled="true"
+            >
+              <option>Select Location</option>
+              <option>Manila</option>
+              <option>Cebu</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Registered Date</label>
+            <input
+              type="date"
+              className="form-control form-control-md"
+              placeholder="Enter Your Website Name"
+              name="date"
+              required
+              value={user.date}
+              disabled="true"
+            />
+          </div>
+          <Link to="/">
+            <button className="btn btn-success">
+              Back
+            </button>
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };
