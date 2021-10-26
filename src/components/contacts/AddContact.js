@@ -26,23 +26,25 @@ const AddContact = () => {
     }
 
     console.log(name);
-    console.log(name.replace(/ /g, '').match(/[^a-zA-Z]/g)!==null);
-    if (name.replace(/ /g, '').match(/[^a-zA-Z]/g)!==null) {
+    console.log(name.replace(/ /g, '').match(/[^a-zA-Z]/g) !== null);
+    if (name.replace(/ /g, '').match(/[^a-zA-Z]/g) !== null) {
       alert("Please enter letter only [a-z],[A-Z] for Full Name");
       return;
     }
 
     console.log(email);
+
     console.log(email.replace('@', '').replace('.', ''));
-    console.log(email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g)!==null);
-    if (email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g)!==null) {
+    console.log(email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g) !== null);
+    if (email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g) !== null) {
       alert("Special character(s) is not valid for Email Address");
       return;
     }
-    
+
     await axios.post("http://localhost:3003/contacts", user);
     history.push("/");
   };
+
   return (
     <div className="container">
       <div className="w-75 mx-auto shadow p-5">
@@ -67,7 +69,7 @@ const AddContact = () => {
               type="email"
               className="form-control form-control-md"
               placeholder="example@email.com"
-              pattern=".+\.com" 
+              pattern=".+\.com"
               maxLength="40"
               required
               name="email"
@@ -116,6 +118,9 @@ const AddContact = () => {
               onChange={(e) => onInputChange(e)}
             />
           </div>
+          <a href="/" className="btn btn-secondary mr-1">
+            Back
+          </a>
           <button className="btn btn-success">
             Add
           </button>
