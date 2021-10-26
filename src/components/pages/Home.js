@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Posts from "./Posts";
+// import Posts from "./Posts";
 import Pagination from "./Pagination";
 
 const Home = () => {
@@ -33,11 +33,12 @@ const Home = () => {
 
   //Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   
   console.log("get contacts");
   console.log(currentPosts.length);
-  console.log(contacts);
+  console.log(contacts.length);
+  const union=[...new Set([...contacts, ...currentPosts])];
+  console.log(union);
   return (
     <div className="container">
       {/* <Posts posts={currentPosts} loading={loading} /> */}
@@ -57,7 +58,7 @@ const Home = () => {
         <tbody>
           {currentPosts.map((user, index) => (
             <tr className="text-center">
-              <th scope="row">{user.id}</th>
+              <th scope="row">{(user.id)}</th>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.contact}</td>
