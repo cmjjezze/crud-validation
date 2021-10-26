@@ -21,10 +21,10 @@ const Home = () => {
     //setLoading(false);
   }
 
-  const deleteUser = async (id) => {
-    await axios.delete(`http://localhost:3003/contacts/${id}`);
-    fetchPosts();
-  };
+  // const deleteUser = async (id) => {
+  //   await axios.delete(`http://localhost:3003/contacts/${id}`);
+  //   fetchPosts();
+  // };
 
   //Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -71,9 +71,15 @@ const Home = () => {
                   <Link className="btn btn-secondary" to={`/contacts/edit/${user.id}`}>
                     Update
                   </Link>
-                  <Link
+                  {/* <Link
                     className="btn btn-danger"
                     onClick={() => deleteUser(user.id)}
+                  >
+                    Delete
+                  </Link> */}
+                  <Link
+                    className="btn btn-danger"
+                    to={`/contacts/delete/${user.id}`}
                   >
                     Delete
                   </Link>
