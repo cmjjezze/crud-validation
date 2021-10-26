@@ -1,65 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
 
-const EditContact = () => {
-  let history = useHistory();
-  const { id } = useParams();
+const DeleteContact = () => {
   const [user, setUser] = useState({
     name: "",
     email: "",
     contact: "",
     location: "",
-    date: "",
+    date: ""
   });
-
-  const { name, email, contact, location, date } = user;
-  const onInputChange = e => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
+  const { id } = useParams();
   useEffect(() => {
     loadUser();
   }, []);
-
-  const onSubmit = async (e) => {
-
-    console.log(user);
-    e.preventDefault();
-    if (location === "Select Location") {
-      alert("Please select location");
-      return;
-    }
-
-    console.log(name);
-    console.log(name.replace(/ /g, '').match(/[^a-zA-Z]/g) !== null);
-    if (name.replace(/ /g, '').match(/[^a-zA-Z]/g) !== null) {
-      alert("Please enter letter only [a-z],[A-Z]");
-      return;
-    }
-
-    console.log(email);
-    console.log(email.replace('@', '').replace('.', ''));
-    console.log(email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g) !== null);
-    if (email.replace('@', '').replace('.', '').match(/[^a-zA-Z0-9]/g) !== null) {
-      alert("Special character(s) is not valid for Email Address");
-      return;
-    }
-
-    await axios.put(`http://localhost:3003/contacts/${id}`, user);
-    history.push("/");
-  };
-
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:3003/contacts/${id}`);
-    setUser(result.data);
+    const res = await axios.get(`http://localhost:3003/contacts/${id}`);
+    setUser(res.data);
   };
 
+  const deleteUser = async (id) => {
+    await axios.delete(`http://localhost:3003/contacts/${id}`);
+  };
   return (
     <div className="container">
       <div className="w-75 mx-auto shadow p-5">
-        <h2 className="text-center mb-4">Edit A User {id}</h2>
-        <form onSubmit={e => onSubmit(e)}>
+        <h2 className="text-center mb-4">Delete Contact {user.id}</h2>
+        <form>
           <div className="form-group">
             <label>Full Name</label>
             <input
@@ -69,8 +36,8 @@ const EditContact = () => {
               name="name"
               maxLength="30"
               required
-              value={name}
-              onChange={(e) => onInputChange(e)}
+              value={user.name}
+              disabled="true"
             />
           </div>
           <div className="form-group">
@@ -79,12 +46,12 @@ const EditContact = () => {
               type="email"
               className="form-control form-control-md"
               placeholder="example@email.com"
-              maxLength="40"
               pattern=".+\.com"
+              maxLength="40"
               required
               name="email"
-              value={email}
-              onChange={(e) => onInputChange(e)}
+              value={user.email}
+              disabled="true"
             />
           </div>
           <div className="form-group">
@@ -97,8 +64,8 @@ const EditContact = () => {
               pattern="[0-9]{11}"
               required
               name="contact"
-              value={contact}
-              onChange={(e) => onInputChange(e)}
+              value={user.contact}
+              disabled="true"
             />
           </div>
           <div className="form-group">
@@ -108,8 +75,8 @@ const EditContact = () => {
               className="form-control form-control-md"
               required
               name="location"
-              value={location}
-              onChange={(e) => onInputChange(e)}
+              value={user.location}
+              disabled="true"
             >
               <option>Select Location</option>
               <option>Manila</option>
@@ -124,27 +91,27 @@ const EditContact = () => {
               placeholder="Enter Your Website Name"
               name="date"
               required
-              value={date}
-              onChange={(e) => onInputChange(e)}
+              value={user.date}
+              disabled="true"
             />
           </div>
         </form>
         <a href="/" className="btn btn-secondary mr-1">
           Back
         </a>
-        <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Save
+        <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Delete
         </button>
         {/* <!-- Modal --> */}
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Update Contact {user.id}</h5>
+                <h5 className="modal-title" id="exampleModalLabel">Delete Contact {user.id}</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body">
-                <label>Please confirm the update to the following:</label><br />
+                <label>Are you sure you want to delete this contact?</label><br />
                 <label>Full Name : {user.name}</label><br />
                 <label>Email Address : {user.email}</label><br />
                 <label>Contact Number : {user.contact}</label><br />
@@ -153,7 +120,7 @@ const EditContact = () => {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <a href="/" className="btn btn-success" data-bs-dismiss="modal" aria-label="Close" onClick={e => onSubmit(e)}>Confirm</a>
+                <a href="/" className="btn btn-success" onClick={() => deleteUser(user.id)}>Confirm</a>
               </div>
             </div>
           </div>
@@ -163,4 +130,4 @@ const EditContact = () => {
   );
 };
 
-export default EditContact;
+export default DeleteContact;

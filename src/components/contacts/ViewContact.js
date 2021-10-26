@@ -92,7 +92,7 @@ const ViewContact = () => {
             />
           </div>
           <Link to="/">
-            <button className="btn btn-success">
+            <button className="btn btn-secondary">
               Back
             </button>
           </Link>
